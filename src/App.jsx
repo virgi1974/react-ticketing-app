@@ -1,5 +1,5 @@
-import './App.css'
-import DateRangePicker from './components/DateRangePicker'
+import "./App.css";
+import DateRangePicker from "./components/DateRangePicker";
 
 function App() {
   const handleDateChange = (startDate, endDate) => {
@@ -12,7 +12,7 @@ function App() {
       <h1>Ticketing System API</h1>
       <DateRangePicker onDateChange={handleDateChange} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

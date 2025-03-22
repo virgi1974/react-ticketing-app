@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css'; // CSS for styling
-import './DateRangePicker.css';
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css"; // CSS for styling
+import "./DateRangePicker.css";
 
 const DateRangePicker = ({ onDateChange }) => {
   const [startDate, setStartDate] = useState(null);
@@ -13,7 +13,7 @@ const DateRangePicker = ({ onDateChange }) => {
         <label>Start Date:</label>
         <DatePicker
           selected={startDate}
-          onChange={date => {
+          onChange={(date) => {
             setStartDate(date);
             onDateChange && onDateChange(date, endDate);
           }}
@@ -30,7 +30,7 @@ const DateRangePicker = ({ onDateChange }) => {
         <label>End Date:</label>
         <DatePicker
           selected={endDate}
-          onChange={date => {
+          onChange={(date) => {
             setEndDate(date);
             onDateChange && onDateChange(startDate, date);
           }}
@@ -45,6 +45,6 @@ const DateRangePicker = ({ onDateChange }) => {
       </div>
     </div>
   );
-}
+};
 
 export default DateRangePicker;
