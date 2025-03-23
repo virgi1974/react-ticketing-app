@@ -7,6 +7,14 @@ const DateRangePicker = ({ onDateChange }) => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  // Handle search button click
+  const handleSearch = () => {
+    // Only trigger search if both dates are selected
+    if (startDate && endDate && onDateChange) {
+      onDateChange(startDate, endDate);
+    }
+  };
+
   return (
     <div className="date-picker-container">
       <div className="date-picker-field">
@@ -15,7 +23,6 @@ const DateRangePicker = ({ onDateChange }) => {
           selected={startDate}
           onChange={(date) => {
             setStartDate(date);
-            onDateChange && onDateChange(date, endDate);
           }}
           selectsStart
           startDate={startDate}
@@ -32,7 +39,6 @@ const DateRangePicker = ({ onDateChange }) => {
           selected={endDate}
           onChange={(date) => {
             setEndDate(date);
-            onDateChange && onDateChange(startDate, date);
           }}
           selectsEnd
           startDate={startDate}
@@ -43,6 +49,14 @@ const DateRangePicker = ({ onDateChange }) => {
           className="date-input"
         />
       </div>
+
+      <button
+        className="search-button"
+        onClick={handleSearch}
+        disabled={!startDate || !endDate}
+      >
+        Search Events
+      </button>
     </div>
   );
 };
