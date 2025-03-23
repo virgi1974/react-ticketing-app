@@ -19,7 +19,7 @@ export const fetchEvents = async ({
   startDate,
   endDate,
   page = 1,
-  perPage = 10,
+  perPage = 9,
 }) => {
   try {
     // Build query parameters

@@ -16,12 +16,12 @@ function App() {
       setError(null);
 
       const result = await fetchEvents({ startDate, endDate });
-      console.log('API response:', result);
+      console.log("API response:", result);
 
       setEvents(result.data || []);
     } catch (err) {
-      console.error('Error fetching events:', err);
-      setError('Failed to fetch events. Please try again.');
+      console.error("Error fetching events:", err);
+      setError("Failed to fetch events. Please try again.");
     } finally {
       setLoading(false);
     }

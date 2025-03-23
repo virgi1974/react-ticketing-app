@@ -35,7 +35,7 @@ const EventsList = ({ events, loading, error }) => {
         gridTemplateColumns: {
           xs: "1fr", // 1 column on mobile
           sm: "repeat(2, 1fr)", // 2 columns on tablet
-          md: "repeat(5, 1fr)", // 3 columns on desktop
+          md: "repeat(3, 1fr)", // 3 columns on desktop
         },
       }}
     >
