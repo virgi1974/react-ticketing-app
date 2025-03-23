@@ -19,11 +19,12 @@ export const fetchEvents = async ({
   startDate,
   endDate,
   page = 1,
-  perPage = 9,
+  perPage = 10,
 }) => {
   try {
     // Build query parameters
     const params = new URLSearchParams();
+    // const [perPage] = useState(9); // Make it a constant if you don't plan to change it
 
     if (startDate) {
       params.append("starts_at", formatDate(startDate));
