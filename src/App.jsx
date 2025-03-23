@@ -44,26 +44,17 @@ function App() {
       setLoading(true);
       setError(null);
 
-      console.log("Fetching events with params:", {
-        startDate,
-        endDate,
-        page,
-        perPage: itemsPerPage,
-      });
-
       const result = await fetchEvents({
         startDate,
         endDate,
         page,
         perPage: itemsPerPage,
       });
-      console.log("API response:", result);
 
       setEvents(result.data || []);
 
       // Update pagination info from meta data
       if (result.meta && result.meta.pagination) {
-        console.log("Pagination data from API:", result.meta.pagination);
         setTotalPages(result.meta.pagination.total_pages || 1);
         setCurrentPage(result.meta.pagination.current_page || 1);
       }
@@ -83,12 +74,6 @@ function App() {
     setCurrentPage(1);
     fetchEventsData(startDate, endDate, 1, perPage);
   };
-
-  console.log("Pagination state:", {
-    currentPage,
-    totalPages,
-    eventsLength: events.length,
-  });
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>

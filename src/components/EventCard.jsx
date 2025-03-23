@@ -15,14 +15,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
 
 const getCategoryImage = (category) => {
-  // Make sure this path is correct relative to your public folder
-  const defaultImage = "/images/default-event.jpg"; // or just use a direct URL for testing
-
-  // For debugging
-  console.log("Category:", category);
+  // Default image for fallback
+  const defaultImage = "/images/default-event.jpg";
 
   if (!category) {
-    console.log("No category provided, using default");
     return defaultImage;
   }
 
@@ -37,19 +33,16 @@ const getCategoryImage = (category) => {
   // Try exact match first
   const lowerCategory = category.toLowerCase().trim();
   if (categoryMap[lowerCategory]) {
-    console.log("Found exact match for:", lowerCategory);
     return categoryMap[lowerCategory];
   }
 
   // Try partial match
   for (const [keyword, image] of Object.entries(categoryMap)) {
     if (lowerCategory.includes(keyword)) {
-      console.log("Found partial match:", keyword, "in", lowerCategory);
       return image;
     }
   }
 
-  console.log("No match found for:", lowerCategory, "using default");
   return defaultImage;
 };
 
@@ -71,8 +64,6 @@ const EventCard = ({ event }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
-  console.log("Event slots:", event.id, event.slots.length);
 
   return (
     <Card

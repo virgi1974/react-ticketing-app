@@ -24,7 +24,6 @@ export const fetchEvents = async ({
   try {
     // Build query parameters
     const params = new URLSearchParams();
-    // const [perPage] = useState(9); // Make it a constant if you don't plan to change it
 
     if (startDate) {
       params.append("starts_at", formatDate(startDate));
@@ -36,8 +35,6 @@ export const fetchEvents = async ({
 
     params.append("page", page);
     params.append("per_page", perPage);
-
-    console.log("----- URL ------", `${BASE_URL}/events?${params}`);
 
     // Make the API request with proper URL and headers
     const response = await fetch(`${BASE_URL}/events?${params}`, {
@@ -54,7 +51,6 @@ export const fetchEvents = async ({
 
     // Parse the JSON response
     const data = await response.json();
-    console.log("data", data);
     return data;
   } catch (error) {
     console.error("Error fetching events:", error);
