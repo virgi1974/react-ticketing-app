@@ -1,18 +1,72 @@
 import {
   Card,
   CardContent,
-  CardHeader,
+  CardMedia,
   Typography,
   Box,
   Chip,
+  Button,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Collapse
 } from "@mui/material";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useState } from "react";
+
+const getCategoryImage = (category) => {
+  // Make sure this path is correct relative to your public folder
+  const defaultImage = '/images/default-event.jpg'; // or just use a direct URL for testing
+
+  // For debugging
+  console.log("Category:", category);
+
+  if (!category) {
+    console.log("No category provided, using default");
+    return defaultImage;
+  }
+
+  // Map of category keywords to images
+  const categoryMap = {
+    'music': '/images/categories/music.jpg',
+    'sports': '/images/categories/sports.jpg',
+    'museum': '/images/categories/museum.jpg',
+    'family': '/images/categories/family.jpg'
+  };
+
+  // Try exact match first
+  const lowerCategory = category.toLowerCase().trim();
+  if (categoryMap[lowerCategory]) {
+    console.log("Found exact match for:", lowerCategory);
+    return categoryMap[lowerCategory];
+  }
+
+  // Try partial match
+  for (const [keyword, image] of Object.entries(categoryMap)) {
+    if (lowerCategory.includes(keyword)) {
+      console.log("Found partial match:", keyword, "in", lowerCategory);
+      return image;
+    }
+  }
+
+  console.log("No match found for:", lowerCategory, "using default");
+  return defaultImage;
+};
 
 const EventCard = ({ event }) => {
+  const [expanded, setExpanded] = useState(false);
+
   // Format the date for display
   const formatDisplayDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
+    const options = { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  console.log('Event slots:', event.id, event.slots.length);
 
   return (
     <Card
@@ -21,58 +75,121 @@ const EventCard = ({ event }) => {
         display: "flex",
         flexDirection: "column",
         transition: "transform 0.2s",
-        "&:hover": { transform: "translateY(-4px)" },
+        "&:hover": { transform: expanded ? "none" : "translateY(-4px)" },
       }}
     >
-      <CardHeader
-        title={event.title}
-        titleTypographyProps={{ variant: "h6" }}
+      <CardMedia
+        component="img"
+        height="140"
+        image={getCategoryImage(event.category)}
+        alt={event.category || 'Event'}
+        sx={{ objectFit: 'cover' }}
       />
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          <Box component="span" fontWeight="fontWeightMedium">
-            Date:
-          </Box>{" "}
-          {formatDisplayDate(event.starts_at)}
+      <CardContent>
+        <Typography variant="h6" component="h2" gutterBottom>
+          {event.title || "Untitled Event"}
         </Typography>
 
-        {event.ends_at && event.ends_at !== event.starts_at && (
-          <Typography variant="body2" color="text.secondary" gutterBottom>
-            <Box component="span" fontWeight="fontWeightMedium">
-              Ends:
-            </Box>{" "}
-            {formatDisplayDate(event.ends_at)}
-          </Typography>
-        )}
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>
+          <Box component="span" fontWeight="fontWeightMedium">
+            Created:
+          </Box>{" "}
+          {formatDisplayDate(event.created_at)}
+        </Typography>
 
-        {event.description && (
-          <Typography variant="body2" color="text.primary" sx={{ mt: 1.5 }}>
-            {event.description}
-          </Typography>
-        )}
+        <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+          <Chip
+            label={event.sell_mode}
+            size="small"
+            sx={{
+              backgroundColor: "primary.light",
+              color: "primary.dark",
+            }}
+          />
 
-        {event.location && (
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>
-            <Box component="span" fontWeight="fontWeightMedium">
-              Location:
-            </Box>{" "}
-            {event.location}
-          </Typography>
-        )}
-
-        {event.category && (
-          <Box sx={{ mt: 2 }}>
+          {event.category && (
             <Chip
               label={event.category}
               size="small"
               sx={{
-                backgroundColor: "primary.light",
-                color: "primary.dark",
+                backgroundColor: "secondary.light",
+                color: "secondary.dark",
               }}
             />
+          )}
+        </Box>
+
+        {event.slots && Array.isArray(event.slots) && event.slots.length > 0 && (
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="body2">
+              <Box component="span" fontWeight="fontWeightMedium">
+                Slots:
+              </Box>{" "}
+              {event.slots.length}
+            </Typography>
+
+            <Button
+              onClick={handleExpandClick}
+              size="small"
+              sx={{ mt: 1 }}
+            >
+              {expanded ? "Hide Details" : "View Details"}
+            </Button>
           </Box>
         )}
       </CardContent>
+
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <Box sx={{ p: 2, pt: 0 }}>
+          {event.slots && Array.isArray(event.slots) && event.slots.map((slot) => (
+            <Accordion key={slot.id || index} disableGutters>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography fontWeight="medium">
+                  {formatDisplayDate(slot.starts_at)}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography variant="body2" gutterBottom>
+                  <Box component="span" fontWeight="medium">Ends:</Box> {formatDisplayDate(slot.ends_at)}
+                </Typography>
+
+                <Typography variant="body2" gutterBottom>
+                  <Box component="span" fontWeight="medium">Selling period:</Box> {formatDisplayDate(slot.sell_from)} - {formatDisplayDate(slot.sell_to)}
+                </Typography>
+
+                {slot.sold_out && (
+                  <Chip
+                    label="SOLD OUT"
+                    size="small"
+                    color="error"
+                    sx={{ mt: 1, mb: 1 }}
+                  />
+                )}
+
+                {slot.zones && slot.zones.length > 0 && (
+                  <Box sx={{ mt: 1 }}>
+                    <Typography variant="body2" fontWeight="medium">Zones:</Typography>
+                    {slot.zones.map(zone => (
+                      <Box key={zone.id} sx={{ ml: 1, mt: 0.5 }}>
+                        <Typography variant="body2" fontWeight="medium">
+                          {zone.name}
+                        </Typography>
+                        <Box sx={{ ml: 1 }}>
+                          <Typography variant="body2">Price: {zone.price}€</Typography>
+                          <Typography variant="body2">Capacity: {zone.capacity}</Typography>
+                          <Typography variant="body2">
+                            {zone.numbered ? "Numbered seating" : "General admission"}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    ))}
+                  </Box>
+                )}
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </Box>
+      </Collapse>
     </Card>
   );
 };

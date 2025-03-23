@@ -1,10 +1,10 @@
-import { Grid, Box, Typography, CircularProgress } from "@mui/material";
+import { Box, Typography, CircularProgress } from "@mui/material";
 import EventCard from "./EventCard";
 
 const EventsList = ({ events, loading, error }) => {
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" my={4}>
+      <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
         <CircularProgress />
       </Box>
     );
@@ -12,7 +12,7 @@ const EventsList = ({ events, loading, error }) => {
 
   if (error) {
     return (
-      <Box my={4}>
+      <Box sx={{ my: 4 }}>
         <Typography color="error">{error}</Typography>
       </Box>
     );
@@ -20,7 +20,7 @@ const EventsList = ({ events, loading, error }) => {
 
   if (events.length === 0) {
     return (
-      <Box my={4}>
+      <Box sx={{ my: 4 }}>
         <Typography>No events found for the selected dates.</Typography>
       </Box>
     );
@@ -35,7 +35,7 @@ const EventsList = ({ events, loading, error }) => {
         gridTemplateColumns: {
           xs: "1fr", // 1 column on mobile
           sm: "repeat(2, 1fr)", // 2 columns on tablet
-          md: "repeat(3, 1fr)", // 3 columns on desktop
+          md: "repeat(5, 1fr)", // 3 columns on desktop
         },
       }}
     >
