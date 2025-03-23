@@ -76,50 +76,71 @@ function App() {
     fetchEventsData(startDate, endDate, 1, perPage);
   };
 
+  const fixedWidth = "1152px"; // Define a consistent width value
+
   return (
-    <Box>
-      <Container maxWidth="lg">
-        <Header />
-        <Box
-          sx={{
-            p: 3,
-            borderRadius: 2,
-            backgroundColor: 'white',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-            mb: 4
-          }}
-        >
-          <Typography variant="h6" component="h2" gutterBottom>
-            Select Date Range
-          </Typography>
+    <Container maxWidth="lg" sx={{ py: 2 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Event Management System
+      </Typography>
+
+      {/* Fixed width wrapper with !important flag */}
+      <div style={{
+        width: fixedWidth,
+        maxWidth: "100%",
+        margin: "0 auto",
+        boxSizing: "border-box"
+      }}>
+        {/* DateRangePicker with fixed width container */}
+        <div style={{
+          width: fixedWidth,
+          maxWidth: "100%",
+          marginBottom: "32px",
+          boxSizing: "border-box",
+          overflow: "hidden" // Prevent expansion
+        }}>
           <DateRangePicker onDateChange={handleDateChange} />
-        </Box>
+        </div>
 
+        {/* Optionally, results count */}
         {!loading && !error && events.length > 0 && (
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="body1">
-              Showing {events.length} events
-            </Typography>
-          </Box>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            Found {events.length} events
+          </Typography>
         )}
 
-        <EventsList events={events} loading={loading} error={error} />
+        {/* EventsList with matching fixed width */}
+        <div style={{
+          width: fixedWidth,
+          maxWidth: "100%",
+          boxSizing: "border-box"
+        }}>
+          <EventsList events={events} loading={loading} error={error} />
+        </div>
 
-        {/* Only show pagination when we have events and more than 1 page */}
+        {/* Pagination */}
         {!loading && !error && events.length > 0 && (
-          <Pagination
-            count={totalPages}
-            page={currentPage}
-            onChange={(e, page) => handlePageChange(page)}
-            color="primary"
-            size="large"
-            showFirstButton
-            showLastButton
-            sx={{ mt: 4, display: "flex", justifyContent: "center" }}
-          />
+          <div style={{
+            width: fixedWidth,
+            maxWidth: "100%",
+            marginTop: "32px",
+            display: "flex",
+            justifyContent: "center",
+            boxSizing: "border-box"
+          }}>
+            <Pagination
+              count={totalPages}
+              page={currentPage}
+              onChange={(e, page) => handlePageChange(page)}
+              color="primary"
+              size="large"
+              showFirstButton
+              showLastButton
+            />
+          </div>
         )}
-      </Container>
-    </Box>
+      </div>
+    </Container>
   );
 }
 
