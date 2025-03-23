@@ -6,10 +6,12 @@ import {
   Box,
   Chip,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Collapse,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
@@ -47,7 +49,8 @@ const getCategoryImage = (category) => {
 };
 
 const EventCard = ({ event }) => {
-  const [expanded, setExpanded] = useState(false);
+  // Change expanded state to dialog state
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   // Format the date for display
   const formatDisplayDate = (dateString) => {
@@ -61,87 +64,117 @@ const EventCard = ({ event }) => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
+  // Update handler to open dialog instead
+  const handleViewDetails = () => {
+    setDialogOpen(true);
   };
 
   return (
-    <Card
-      sx={{
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        transition: "transform 0.2s",
-        "&:hover": { transform: expanded ? "none" : "translateY(-4px)" },
-      }}
-    >
-      <CardMedia
-        component="img"
-        height="140"
-        image={getCategoryImage(event.category)}
-        alt={event.category || "Event"}
-        sx={{ objectFit: "cover" }}
-      />
-      <CardContent>
-        <Typography variant="h6" component="h2" gutterBottom>
-          {event.title || "Untitled Event"}
-        </Typography>
+    <>
+      <Card
+        sx={{
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          transition: "transform 0.2s",
+          "&:hover": { transform: "translateY(-4px)" },
+        }}
+      >
+        <CardMedia
+          component="img"
+          height="140"
+          image={getCategoryImage(event.category)}
+          alt={event.category || "Event"}
+          sx={{ objectFit: "cover" }}
+        />
+        <CardContent>
+          <Typography variant="h6" component="h2" gutterBottom>
+            {event.title || "Untitled Event"}
+          </Typography>
 
-        {event.category && (
-          <Chip
-            label={event.category}
-            color="primary"
-            size="small"
-            sx={{
-              fontWeight: 600,
-              fontSize: "0.875rem",
-              mb: 1.5,
-              px: 1,
-            }}
-          />
-        )}
-
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>
-          <Box component="span" fontWeight="fontWeightMedium">
-            Created:
-          </Box>{" "}
-          {formatDisplayDate(event.created_at)}
-        </Typography>
-
-        <Box sx={{ mt: 2, display: "flex", gap: 1, flexWrap: "wrap" }}>
-          <Chip
-            label={event.sell_mode}
-            size="small"
-            sx={{
-              bgcolor: "primary.dark",
-              color: "white",
-              fontWeight: 600,
-              fontSize: "0.875rem",
-              px: 1,
-            }}
-          />
-        </Box>
-
-        {event.slots &&
-          Array.isArray(event.slots) &&
-          event.slots.length > 0 && (
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="body2">
-                <Box component="span" fontWeight="fontWeightMedium">
-                  Slots:
-                </Box>{" "}
-                {event.slots.length}
-              </Typography>
-
-              <Button onClick={handleExpandClick} size="small" sx={{ mt: 1 }}>
-                {expanded ? "Hide Details" : "View Details"}
-              </Button>
-            </Box>
+          {event.category && (
+            <Chip
+              label={event.category}
+              color="primary"
+              size="small"
+              sx={{
+                fontWeight: 600,
+                fontSize: "0.875rem",
+                mb: 1.5,
+                px: 1,
+              }}
+            />
           )}
-      </CardContent>
 
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <Box sx={{ p: 2, pt: 0 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>
+            <Box component="span" fontWeight="fontWeightMedium">
+              Created:
+            </Box>{" "}
+            {formatDisplayDate(event.created_at)}
+          </Typography>
+
+          <Box sx={{ mt: 2, display: "flex", gap: 1, flexWrap: "wrap" }}>
+            <Chip
+              label={event.sell_mode}
+              size="small"
+              sx={{
+                bgcolor: "primary.dark",
+                color: "white",
+                fontWeight: 600,
+                fontSize: "0.875rem",
+                px: 1,
+              }}
+            />
+          </Box>
+
+          {event.slots &&
+            Array.isArray(event.slots) &&
+            event.slots.length > 0 && (
+              <Box sx={{ mt: 2 }}>
+                <Typography variant="body2">
+                  <Box component="span" fontWeight="fontWeightMedium">
+                    Slots:
+                  </Box>{" "}
+                  {event.slots.length}
+                </Typography>
+
+                <Button onClick={handleViewDetails} size="small" sx={{ mt: 1 }}>
+                  View Details
+                </Button>
+              </Box>
+            )}
+        </CardContent>
+      </Card>
+
+      {/* Dialog to show event details */}
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        maxWidth="md"
+        PaperProps={{
+          sx: { borderRadius: 2 }
+        }}
+      >
+        <DialogTitle sx={{ borderBottom: '1px solid #eee', pb: 2 }}>
+          <Typography variant="h5" component="h2" fontWeight="500">
+            {event.title || "Event Details"}
+          </Typography>
+          {event.category && (
+            <Chip
+              label={event.category}
+              color="primary"
+              size="small"
+              sx={{
+                fontWeight: 600,
+                fontSize: "0.875rem",
+                mt: 1,
+                px: 1,
+              }}
+            />
+          )}
+        </DialogTitle>
+
+        <DialogContent sx={{ pt: 3 }}>
           {event.slots &&
             Array.isArray(event.slots) &&
             event.slots.map((slot, index) => (
@@ -206,9 +239,9 @@ const EventCard = ({ event }) => {
                 </AccordionDetails>
               </Accordion>
             ))}
-        </Box>
-      </Collapse>
-    </Card>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
