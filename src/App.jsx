@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { Container, Typography, Box } from "@mui/material";
 import "./App.css";
 import DateRangePicker from "./components/DateRangePicker";
+import EventsList from "./components/EventsList";
 import { fetchEvents } from "./utils/api";
 
 function App() {
@@ -17,7 +19,7 @@ function App() {
       const result = await fetchEvents({ startDate, endDate });
 
       console.log("API response:", result);
-      setEvents(result.events || []);
+      setEvents(result.data || []);
     } catch (err) {
       console.error("Error fetching events:", err);
       setError("Failed to fetch events. Please try again.");
@@ -27,16 +29,17 @@ function App() {
   };
 
   return (
-    <div className="container">
-      <h1>Event Management System</h1>
-      <DateRangePicker onDateChange={handleDateChange} />
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Event Management System
+      </Typography>
 
-      {loading && <p>Loading events...</p>}
-      {error && <p className="error">{error}</p>}
+      <Box mb={4}>
+        <DateRangePicker onDateChange={handleDateChange} />
+      </Box>
 
-      {/* We'll add the events list component here later */}
-      <pre>{JSON.stringify(events, null, 2)}</pre>
-    </div>
+      <EventsList events={events} loading={loading} error={error} />
+    </Container>
   );
 }
 
