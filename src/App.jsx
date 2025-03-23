@@ -4,6 +4,7 @@ import "./App.css";
 import DateRangePicker from "./components/DateRangePicker";
 import EventsList from "./components/EventsList";
 import { fetchEvents } from "./utils/api";
+import Header from './components/Header';
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -76,31 +77,49 @@ function App() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Event Management System
-      </Typography>
+    <Box>
+      <Container maxWidth="lg">
+        <Header />
+        <Box
+          sx={{
+            p: 3,
+            borderRadius: 2,
+            backgroundColor: 'white',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+            mb: 4
+          }}
+        >
+          <Typography variant="h6" component="h2" gutterBottom>
+            Select Date Range
+          </Typography>
+          <DateRangePicker onDateChange={handleDateChange} />
+        </Box>
 
-      <Box mb={4}>
-        <DateRangePicker onDateChange={handleDateChange} />
-      </Box>
+        {!loading && !error && events.length > 0 && (
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body1">
+              Showing {events.length} events
+            </Typography>
+          </Box>
+        )}
 
-      <EventsList events={events} loading={loading} error={error} />
+        <EventsList events={events} loading={loading} error={error} />
 
-      {/* Only show pagination when we have events and more than 1 page */}
-      {!loading && !error && events.length > 0 && (
-        <Pagination
-          count={totalPages}
-          page={currentPage}
-          onChange={(e, page) => handlePageChange(page)}
-          color="primary"
-          size="large"
-          showFirstButton
-          showLastButton
-          sx={{ mt: 4, display: "flex", justifyContent: "center" }}
-        />
-      )}
-    </Container>
+        {/* Only show pagination when we have events and more than 1 page */}
+        {!loading && !error && events.length > 0 && (
+          <Pagination
+            count={totalPages}
+            page={currentPage}
+            onChange={(e, page) => handlePageChange(page)}
+            color="primary"
+            size="large"
+            showFirstButton
+            showLastButton
+            sx={{ mt: 4, display: "flex", justifyContent: "center" }}
+          />
+        )}
+      </Container>
+    </Box>
   );
 }
 
