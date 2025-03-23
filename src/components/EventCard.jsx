@@ -210,30 +210,50 @@ const EventCard = ({ event }) => {
                   )}
 
                   {slot.zones && slot.zones.length > 0 && (
-                    <Box sx={{ mt: 1 }}>
-                      <Typography variant="body2" fontWeight="medium">
+                    <Box sx={{ mt: 2, mb: 1 }}>
+                      <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1 }}>
                         Zones:
                       </Typography>
-                      {slot.zones.map((zone) => (
-                        <Box key={zone.id} sx={{ ml: 1, mt: 0.5 }}>
-                          <Typography variant="body2" fontWeight="medium">
-                            {zone.name}
-                          </Typography>
-                          <Box sx={{ ml: 1 }}>
-                            <Typography variant="body2">
-                              Price: {zone.price}€
+
+                      <Box sx={{
+                        display: 'grid',
+                        gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' },
+                        gap: 2
+                      }}>
+                        {slot.zones.map((zone) => (
+                          <Box
+                            key={zone.id}
+                            sx={{
+                              border: '1px solid #eaeaea',
+                              borderRadius: 1,
+                              p: 2,
+                              backgroundColor: 'background.paper',
+                              boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                            }}
+                          >
+                            <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
+                              {zone.name}
                             </Typography>
-                            <Typography variant="body2">
-                              Capacity: {zone.capacity}
-                            </Typography>
-                            <Typography variant="body2">
-                              {zone.numbered
-                                ? "Numbered seating"
-                                : "General admission"}
-                            </Typography>
+
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                              <Typography variant="body2" color="text.secondary">Price:</Typography>
+                              <Typography variant="body2" fontWeight="medium">{zone.price}€</Typography>
+                            </Box>
+
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+                              <Typography variant="body2" color="text.secondary">Capacity:</Typography>
+                              <Typography variant="body2" fontWeight="medium">{zone.capacity}</Typography>
+                            </Box>
+
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                              <Typography variant="body2" color="text.secondary">Seating:</Typography>
+                              <Typography variant="body2" fontWeight="medium">
+                                {zone.numbered ? "Numbered" : "General admission"}
+                              </Typography>
+                            </Box>
                           </Box>
-                        </Box>
-                      ))}
+                        ))}
+                      </Box>
                     </Box>
                   )}
                 </AccordionDetails>
