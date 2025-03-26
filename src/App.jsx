@@ -4,7 +4,6 @@ import "./App.css";
 import DateRangePicker from "./components/DateRangePicker";
 import EventsList from "./components/EventsList";
 import { fetchEvents } from "./utils/api";
-import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 
 function App() {
