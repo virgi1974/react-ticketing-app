@@ -12,6 +12,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import SettingsIcon from "@mui/icons-material/Settings";
 import InfoIcon from "@mui/icons-material/Info";
+import EventIcon from "@mui/icons-material/Event";
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -65,7 +66,18 @@ const Navbar = () => {
             About
           </MenuItem>
         </Menu>
-        <Typography variant="h4" sx={{ flexGrow: 1, textAlign: "center" }}>
+        <Typography
+          variant="h4"
+          sx={{
+            flexGrow: 1,
+            textAlign: "center",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 1  // space between icon and text
+          }}
+        >
+          <EventIcon sx={{ fontSize: 40, color: "white" }} />
           Event Management System
         </Typography>
         <Button color="inherit">Login</Button>

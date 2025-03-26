@@ -80,12 +80,13 @@ function App() {
   const fixedWidth = "1152px"; // Define a consistent width value
 
   return (
-    <Box sx={{ margin: 0, padding: 0, width: "100%" }}>
+    <>
       <Navbar />
+      <Header />
       <Container maxWidth="lg" sx={{ pb: 2 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
+        {/* <Typography variant="h4" component="h1" gutterBottom>
           Event Management System
-        </Typography>
+        </Typography> */}
 
         {/* Fixed width wrapper with !important flag */}
         <div
@@ -152,7 +153,7 @@ function App() {
           )}
         </div>
       </Container>
-    </Box>
+    </>
   );
 }
 
