@@ -13,11 +13,20 @@ import {
   AccordionSummary,
   AccordionDetails,
   IconButton,
+  Paper,
+  Stack,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import { alpha } from '@mui/material/styles';
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import EuroIcon from '@mui/icons-material/Euro';
+import GroupIcon from '@mui/icons-material/Group';
+import EventSeatIcon from '@mui/icons-material/EventSeat';
+import SoldOutIcon from '@mui/icons-material/MoneyOff';
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 
 const getCategoryImage = (category) => {
   // Default image for fallback
@@ -51,6 +60,16 @@ const getCategoryImage = (category) => {
   return defaultImage;
 };
 
+const getCategoryColor = (category) => {
+  const colorMap = {
+    'music': '#2196f3',    // blue
+    'sports': '#ff9800',   // orange
+    'family': '#4caf50',   // green
+    'museum visit': '#9c27b0',   // green
+  };
+  return colorMap[category.toLowerCase()] || '#ec20ec';  // purple for others
+};
+
 const EventCard = ({ event }) => {
   // Change expanded state to dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -76,11 +95,15 @@ const EventCard = ({ event }) => {
     <>
       <Card
         sx={{
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          transition: "transform 0.2s",
-          "&:hover": { transform: "translateY(-4px)" },
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          boxShadow: (theme) => `0 4px 12px ${alpha(getCategoryColor(event.category), 0.3)}`,
+          // Add hover effect if you want
+          '&:hover': {
+            boxShadow: (theme) => `0 6px 16px ${alpha(getCategoryColor(event.category), 0.4)}`
+          }
         }}
       >
         <CardMedia
@@ -98,9 +121,10 @@ const EventCard = ({ event }) => {
           {event.category && (
             <Chip
               label={event.category}
-              color="primary"
               size="small"
               sx={{
+                bgcolor: getCategoryColor(event.category),
+                color: 'white',
                 fontWeight: 600,
                 fontSize: "0.875rem",
                 mb: 1.5,
@@ -116,18 +140,31 @@ const EventCard = ({ event }) => {
             {formatDisplayDate(event.created_at)}
           </Typography>
 
-          <Box sx={{ mt: 2, display: "flex", gap: 1, flexWrap: "wrap" }}>
-            <Chip
-              label={event.sell_mode}
-              size="small"
+          <Box sx={{
+            mt: 2,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1.5  // increased gap
+          }}>
+            <Box
               sx={{
-                bgcolor: "primary.dark",
-                color: "white",
-                fontWeight: 600,
-                fontSize: "0.875rem",
-                px: 1,
+                width: 12,      // increased from 8
+                height: 12,     // increased from 8
+                borderRadius: '50%',
+                bgcolor: 'success.main',
+                boxShadow: '0 0 0 3px rgba(46, 125, 50, 0.2)'  // increased shadow
               }}
             />
+            <Typography
+              variant="body2"
+              sx={{
+                fontSize: '0.95rem',  // slightly larger text
+                fontWeight: 500,
+                color: 'text.secondary'
+              }}
+            >
+              {event.sell_mode}
+            </Typography>
           </Box>
 
           {event.slots &&
@@ -136,7 +173,7 @@ const EventCard = ({ event }) => {
               <Box sx={{ mt: 2 }}>
                 <Typography variant="body2">
                   <Box component="span" fontWeight="fontWeightMedium">
-                    Slots:
+                    Sessions:
                   </Box>{" "}
                   {event.slots.length}
                 </Typography>
@@ -166,21 +203,8 @@ const EventCard = ({ event }) => {
       >
         <DialogTitle sx={{ borderBottom: '1px solid #eee', pb: 2 }}>
           <Typography variant="h5" component="h2" fontWeight="500">
-            {event.title || "Event Details"}
+            Next Sessions
           </Typography>
-          {event.category && (
-            <Chip
-              label={event.category}
-              color="primary"
-              size="small"
-              sx={{
-                fontWeight: 600,
-                fontSize: "0.875rem",
-                mt: 1,
-                px: 1,
-              }}
-            />
-          )}
         </DialogTitle>
 
         <DialogContent sx={{ pt: 3 }}>
@@ -188,10 +212,46 @@ const EventCard = ({ event }) => {
             Array.isArray(event.slots) &&
             event.slots.map((slot, index) => (
               <Accordion key={slot.id || index} disableGutters>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography fontWeight="medium">
-                    {formatDisplayDate(slot.starts_at)}
-                  </Typography>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  sx={{
+                    '& .MuiTypography-root': {
+                      color: slot.sold_out ? 'error.main' : 'success.main',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1
+                    }
+                  }}
+                >
+                  <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    mr: 2  // Add margin to prevent overlap with expandIcon
+                  }}>
+                    <Typography fontWeight="medium">
+                      {slot.sold_out ? (
+                        <SoldOutIcon fontSize="small" color="error" />
+                      ) : (
+                        <ConfirmationNumberIcon fontSize="small" color="success" />
+                      )}
+                      {formatDisplayDate(slot.starts_at)}
+                    </Typography>
+                    {slot.sold_out ? (
+                      <Chip
+                        label="Sold Out"
+                        size="small"
+                        color="error"
+                      />
+                    ) : (
+                      <Chip
+                        label="Available"
+                        size="small"
+                        color="success"
+                      />
+                    )}
+                  </Box>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography variant="body2" gutterBottom>
@@ -209,19 +269,20 @@ const EventCard = ({ event }) => {
                     {formatDisplayDate(slot.sell_to)}
                   </Typography>
 
-                  {slot.sold_out && (
-                    <Chip
-                      label="SOLD OUT"
-                      size="small"
-                      color="error"
-                      sx={{ mt: 1, mb: 1 }}
-                    />
-                  )}
-
                   {slot.zones && slot.zones.length > 0 && (
                     <Box sx={{ mt: 2, mb: 1 }}>
-                      <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 1 }}>
-                        Zones:
+                      <Typography
+                        variant="subtitle1"
+                        fontWeight="bold"
+                        sx={{
+                          mb: 2,
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: 1
+                        }}
+                      >
+                        <LocalActivityIcon fontSize="small" color="primary" />
+                        Zones
                       </Typography>
 
                       <Box sx={{
@@ -230,37 +291,80 @@ const EventCard = ({ event }) => {
                         gap: 2
                       }}>
                         {slot.zones.map((zone) => (
-                          <Box
+                          <Paper
                             key={zone.id}
+                            elevation={0}
                             sx={{
-                              border: '1px solid #eaeaea',
-                              borderRadius: 1,
                               p: 2,
-                              backgroundColor: 'background.paper',
-                              boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
+                              border: '1px solid',
+                              borderColor: 'divider',
+                              borderRadius: 2,
+                              transition: 'all 0.2s',
+                              '&:hover': {
+                                boxShadow: 2,
+                                borderColor: 'primary.main',
+                              }
                             }}
                           >
-                            <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
+                            <Typography
+                              variant="subtitle2"
+                              fontWeight="bold"
+                              color="primary"
+                              gutterBottom
+                            >
                               {zone.name}
                             </Typography>
 
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                              <Typography variant="body2" color="text.secondary">Price:</Typography>
-                              <Typography variant="body2" fontWeight="medium">{zone.price}€</Typography>
-                            </Box>
+                            <Stack spacing={1}>
+                              <Box sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                              }}>
+                                <Typography variant="body2" color="text.secondary">
+                                  <EuroIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                                  Price
+                                </Typography>
+                                <Chip
+                                  label={`${zone.price}€`}
+                                  size="small"
+                                  color="primary"
+                                  variant="outlined"
+                                />
+                              </Box>
 
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
-                              <Typography variant="body2" color="text.secondary">Capacity:</Typography>
-                              <Typography variant="body2" fontWeight="medium">{zone.capacity}</Typography>
-                            </Box>
+                              <Box sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                              }}>
+                                <Typography variant="body2" color="text.secondary">
+                                  <GroupIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                                  Capacity
+                                </Typography>
+                                <Typography variant="body2" fontWeight="medium">
+                                  {zone.capacity}
+                                </Typography>
+                              </Box>
 
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                              <Typography variant="body2" color="text.secondary">Seating:</Typography>
-                              <Typography variant="body2" fontWeight="medium">
-                                {zone.numbered ? "Numbered" : "General admission"}
-                              </Typography>
-                            </Box>
-                          </Box>
+                              <Box sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                              }}>
+                                <Typography variant="body2" color="text.secondary">
+                                  <EventSeatIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                                  Seating
+                                </Typography>
+                                <Chip
+                                  label={zone.numbered ? "Numbered" : "General"}
+                                  size="small"
+                                  color={zone.numbered ? "info" : "default"}
+                                  variant="outlined"
+                                />
+                              </Box>
+                            </Stack>
+                          </Paper>
                         ))}
                       </Box>
                     </Box>
