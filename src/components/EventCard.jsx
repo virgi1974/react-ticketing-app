@@ -12,9 +12,12 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  IconButton,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 
 const getCategoryImage = (category) => {
   // Default image for fallback
@@ -138,9 +141,15 @@ const EventCard = ({ event }) => {
                   {event.slots.length}
                 </Typography>
 
-                <Button onClick={handleViewDetails} size="small" sx={{ mt: 1 }}>
-                  View Details
-                </Button>
+                <Fab
+                  onClick={handleViewDetails}
+                  size="small"
+                  color="primary"
+                  sx={{ mt: 1 }}
+                  aria-label="expand"
+                >
+                  <AddIcon />
+                </Fab>
               </Box>
             )}
         </CardContent>
