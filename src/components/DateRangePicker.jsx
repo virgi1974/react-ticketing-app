@@ -2,6 +2,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // CSS for styling
 import "./DateRangePicker.css";
+import { Typography } from "@mui/material";
 
 const DateRangePicker = ({ onDateChange }) => {
   const [startDate, setStartDate] = useState(null);

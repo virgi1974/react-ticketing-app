@@ -1,12 +1,19 @@
 #root {
-  margin: 10 auto;
-  padding: 0;
-  width: 70%;
+  margin: 0 auto;
+  width: 100%;
 }
 
+html,
 body {
   margin: 0;
+  background-color: #eef2f6 !important; /* Cool blue-grey */
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.MuiContainer-root {
+  background-color: #ffffff;
+  min-height: 100vh;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
 }

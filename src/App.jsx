@@ -81,7 +81,21 @@ function App() {
   return (
     <>
       <Navbar />
-      <Header />
+      <section style={{ textAlign: "center", padding: "2rem 0" }}>
+        <Typography
+          variant="h5"
+          sx={{
+            whiteSpace: "nowrap",
+            maxWidth: "800px",
+            margin: "0 auto",
+            color: "primary.main", // matches your MUI primary color
+            // alternatively: color: '#1976d2', // MUI's default primary blue
+            fontWeight: 500,
+          }}
+        >
+          Find and browse upcoming events. Select a date range to get started.
+        </Typography>
+      </section>
       <Container maxWidth="lg" sx={{ pb: 2 }}>
         {/* <Typography variant="h4" component="h1" gutterBottom>
           Event Management System

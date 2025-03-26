@@ -54,10 +54,13 @@ const EventCard = ({ event }) => {
       >
         <CardMedia
           component="img"
-          height="140"
+          height="200"
           image={getCategoryImage(event.category)}
           alt={event.category || "Event"}
-          sx={{ objectFit: "cover" }}
+          sx={{
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
         />
         <CardContent>
           <Typography variant="h6" component="h2" gutterBottom>

@@ -71,10 +71,10 @@ const Navbar = () => {
           sx={{
             flexGrow: 1,
             textAlign: "center",
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 1  // space between icon and text
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 1, // space between icon and text
           }}
         >
           <EventIcon sx={{ fontSize: 40, color: "white" }} />
