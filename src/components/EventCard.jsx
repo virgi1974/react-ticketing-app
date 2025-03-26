@@ -18,75 +18,22 @@ import {
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import { alpha } from '@mui/material/styles';
-import LocalActivityIcon from '@mui/icons-material/LocalActivity';
-import EuroIcon from '@mui/icons-material/Euro';
-import GroupIcon from '@mui/icons-material/Group';
-import EventSeatIcon from '@mui/icons-material/EventSeat';
-import SoldOutIcon from '@mui/icons-material/MoneyOff';
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import { alpha } from "@mui/material/styles";
+import LocalActivityIcon from "@mui/icons-material/LocalActivity";
+import EuroIcon from "@mui/icons-material/Euro";
+import GroupIcon from "@mui/icons-material/Group";
+import EventSeatIcon from "@mui/icons-material/EventSeat";
+import SoldOutIcon from "@mui/icons-material/MoneyOff";
+import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 
-const getCategoryImage = (category) => {
-  // Default image for fallback
-  const defaultImage = "/images/default-event.jpg";
-
-  if (!category) {
-    return defaultImage;
-  }
-
-  // Map of category keywords to images
-  const categoryMap = {
-    music: "/images/categories/music.jpg",
-    sports: "/images/categories/sports.jpg",
-    museum: "/images/categories/museum.jpg",
-    family: "/images/categories/family.jpg",
-  };
-
-  // Try exact match first
-  const lowerCategory = category.toLowerCase().trim();
-  if (categoryMap[lowerCategory]) {
-    return categoryMap[lowerCategory];
-  }
-
-  // Try partial match
-  for (const [keyword, image] of Object.entries(categoryMap)) {
-    if (lowerCategory.includes(keyword)) {
-      return image;
-    }
-  }
-
-  return defaultImage;
-};
-
-const getCategoryColor = (category) => {
-  const colorMap = {
-    'music': '#2196f3',    // blue
-    'sports': '#ff9800',   // orange
-    'family': '#4caf50',   // green
-    'museum visit': '#9c27b0',   // green
-  };
-  return colorMap[category.toLowerCase()] || '#ec20ec';  // purple for others
-};
+import { getCategoryImage, getCategoryColor } from "../utils/categoryUtils";
+import { formatDisplayDate } from "../utils/dateUtils";
 
 const EventCard = ({ event }) => {
-  // Change expanded state to dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  // Format the date for display
-  const formatDisplayDate = (dateString) => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  // Update handler to open dialog instead
   const handleViewDetails = () => {
     setDialogOpen(true);
   };
@@ -95,15 +42,14 @@ const EventCard = ({ event }) => {
     <>
       <Card
         sx={{
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          position: 'relative',
-          boxShadow: (theme) => `0 4px 12px ${alpha(getCategoryColor(event.category), 0.3)}`,
-          // Add hover effect if you want
-          '&:hover': {
-            boxShadow: (theme) => `0 6px 16px ${alpha(getCategoryColor(event.category), 0.4)}`
-          }
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          position: "relative",
+          boxShadow: `0 4px 12px ${alpha(getCategoryColor(event.category), 0.3)}`,
+          "&:hover": {
+            boxShadow: `0 6px 16px ${alpha(getCategoryColor(event.category), 0.4)}`,
+          },
         }}
       >
         <CardMedia
@@ -124,7 +70,7 @@ const EventCard = ({ event }) => {
               size="small"
               sx={{
                 bgcolor: getCategoryColor(event.category),
-                color: 'white',
+                color: "white",
                 fontWeight: 600,
                 fontSize: "0.875rem",
                 mb: 1.5,
@@ -140,27 +86,29 @@ const EventCard = ({ event }) => {
             {formatDisplayDate(event.created_at)}
           </Typography>
 
-          <Box sx={{
-            mt: 2,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1.5  // increased gap
-          }}>
+          <Box
+            sx={{
+              mt: 2,
+              display: "flex",
+              alignItems: "center",
+              gap: 1.5,
+            }}
+          >
             <Box
               sx={{
-                width: 12,      // increased from 8
-                height: 12,     // increased from 8
-                borderRadius: '50%',
-                bgcolor: 'success.main',
-                boxShadow: '0 0 0 3px rgba(46, 125, 50, 0.2)'  // increased shadow
+                width: 12,
+                height: 12,
+                borderRadius: "50%",
+                bgcolor: "success.main",
+                boxShadow: "0 0 0 3px rgba(46, 125, 50, 0.2)",
               }}
             />
             <Typography
               variant="body2"
               sx={{
-                fontSize: '0.95rem',  // slightly larger text
+                fontSize: "0.95rem",
                 fontWeight: 500,
-                color: 'text.secondary'
+                color: "text.secondary",
               }}
             >
               {event.sell_mode}
@@ -192,16 +140,15 @@ const EventCard = ({ event }) => {
         </CardContent>
       </Card>
 
-      {/* Dialog to show event details */}
       <Dialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
         maxWidth="md"
         PaperProps={{
-          sx: { borderRadius: 2 }
+          sx: { borderRadius: 2 },
         }}
       >
-        <DialogTitle sx={{ borderBottom: '1px solid #eee', pb: 2 }}>
+        <DialogTitle sx={{ borderBottom: "1px solid #eee", pb: 2 }}>
           <Typography variant="h5" component="h2" fontWeight="500">
             Next Sessions
           </Typography>
@@ -215,41 +162,38 @@ const EventCard = ({ event }) => {
                 <AccordionSummary
                   expandIcon={<ExpandMoreIcon />}
                   sx={{
-                    '& .MuiTypography-root': {
-                      color: slot.sold_out ? 'error.main' : 'success.main',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1
-                    }
+                    "& .MuiTypography-root": {
+                      color: slot.sold_out ? "error.main" : "success.main",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                    },
                   }}
                 >
-                  <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    mr: 2  // Add margin to prevent overlap with expandIcon
-                  }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "100%",
+                      mr: 2,
+                    }}
+                  >
                     <Typography fontWeight="medium">
                       {slot.sold_out ? (
                         <SoldOutIcon fontSize="small" color="error" />
                       ) : (
-                        <ConfirmationNumberIcon fontSize="small" color="success" />
+                        <ConfirmationNumberIcon
+                          fontSize="small"
+                          color="success"
+                        />
                       )}
                       {formatDisplayDate(slot.starts_at)}
                     </Typography>
                     {slot.sold_out ? (
-                      <Chip
-                        label="Sold Out"
-                        size="small"
-                        color="error"
-                      />
+                      <Chip label="Sold Out" size="small" color="error" />
                     ) : (
-                      <Chip
-                        label="Available"
-                        size="small"
-                        color="success"
-                      />
+                      <Chip label="Available" size="small" color="success" />
                     )}
                   </Box>
                 </AccordionSummary>
@@ -276,34 +220,39 @@ const EventCard = ({ event }) => {
                         fontWeight="bold"
                         sx={{
                           mb: 2,
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 1
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1,
                         }}
                       >
                         <LocalActivityIcon fontSize="small" color="primary" />
                         Zones
                       </Typography>
 
-                      <Box sx={{
-                        display: 'grid',
-                        gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' },
-                        gap: 2
-                      }}>
+                      <Box
+                        sx={{
+                          display: "grid",
+                          gridTemplateColumns: {
+                            xs: "1fr",
+                            sm: "repeat(2, 1fr)",
+                          },
+                          gap: 2,
+                        }}
+                      >
                         {slot.zones.map((zone) => (
                           <Paper
                             key={zone.id}
                             elevation={0}
                             sx={{
                               p: 2,
-                              border: '1px solid',
-                              borderColor: 'divider',
+                              border: "1px solid",
+                              borderColor: "divider",
                               borderRadius: 2,
-                              transition: 'all 0.2s',
-                              '&:hover': {
+                              transition: "all 0.2s",
+                              "&:hover": {
                                 boxShadow: 2,
-                                borderColor: 'primary.main',
-                              }
+                                borderColor: "primary.main",
+                              },
                             }}
                           >
                             <Typography
@@ -316,12 +265,17 @@ const EventCard = ({ event }) => {
                             </Typography>
 
                             <Stack spacing={1}>
-                              <Box sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center'
-                              }}>
-                                <Typography variant="body2" color="text.secondary">
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                >
                                   <EuroIcon sx={{ fontSize: 14, mr: 0.5 }} />
                                   Price
                                 </Typography>
@@ -333,12 +287,17 @@ const EventCard = ({ event }) => {
                                 />
                               </Box>
 
-                              <Box sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center'
-                              }}>
-                                <Typography variant="body2" color="text.secondary">
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                >
                                   <GroupIcon sx={{ fontSize: 14, mr: 0.5 }} />
                                   Capacity
                                 </Typography>
@@ -347,13 +306,20 @@ const EventCard = ({ event }) => {
                                 </Typography>
                               </Box>
 
-                              <Box sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center'
-                              }}>
-                                <Typography variant="body2" color="text.secondary">
-                                  <EventSeatIcon sx={{ fontSize: 14, mr: 0.5 }} />
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                >
+                                  <EventSeatIcon
+                                    sx={{ fontSize: 14, mr: 0.5 }}
+                                  />
                                   Seating
                                 </Typography>
                                 <Chip
