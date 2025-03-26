@@ -25,7 +25,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ width: '100%' }}>
+    <AppBar position="static" sx={{ width: "100%" }}>
       <Toolbar>
         <IconButton
           edge="start"
@@ -65,7 +65,7 @@ const Navbar = () => {
             About
           </MenuItem>
         </Menu>
-        <Typography variant="h4" sx={{ flexGrow: 1, textAlign: 'center' }}>
+        <Typography variant="h4" sx={{ flexGrow: 1, textAlign: "center" }}>
           Event Management System
         </Typography>
         <Button color="inherit">Login</Button>

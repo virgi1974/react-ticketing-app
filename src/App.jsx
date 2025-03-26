@@ -4,8 +4,8 @@ import "./App.css";
 import DateRangePicker from "./components/DateRangePicker";
 import EventsList from "./components/EventsList";
 import { fetchEvents } from "./utils/api";
-import Header from './components/Header';
-import Navbar from './components/Navbar';
+import Header from "./components/Header";
+import Navbar from "./components/Navbar";
 
 function App() {
   const [events, setEvents] = useState([]);
@@ -80,7 +80,7 @@ function App() {
   const fixedWidth = "1152px"; // Define a consistent width value
 
   return (
-    <Box sx={{ margin: 0, padding: 0, width: '100%' }}>
+    <Box sx={{ margin: 0, padding: 0, width: "100%" }}>
       <Navbar />
       <Container maxWidth="lg" sx={{ pb: 2 }}>
         <Typography variant="h4" component="h1" gutterBottom>
@@ -88,20 +88,24 @@ function App() {
         </Typography>
 
         {/* Fixed width wrapper with !important flag */}
-        <div style={{
-          width: fixedWidth,
-          maxWidth: "100%",
-          margin: "0 auto",
-          boxSizing: "border-box"
-        }}>
-          {/* DateRangePicker with fixed width container */}
-          <div style={{
+        <div
+          style={{
             width: fixedWidth,
             maxWidth: "100%",
-            marginBottom: "32px",
+            margin: "0 auto",
             boxSizing: "border-box",
-            overflow: "hidden" // Prevent expansion
-          }}>
+          }}
+        >
+          {/* DateRangePicker with fixed width container */}
+          <div
+            style={{
+              width: fixedWidth,
+              maxWidth: "100%",
+              marginBottom: "32px",
+              boxSizing: "border-box",
+              overflow: "hidden", // Prevent expansion
+            }}
+          >
             <DateRangePicker onDateChange={handleDateChange} />
           </div>
 
@@ -113,24 +117,28 @@ function App() {
           )}
 
           {/* EventsList with matching fixed width */}
-          <div style={{
-            width: fixedWidth,
-            maxWidth: "100%",
-            boxSizing: "border-box"
-          }}>
+          <div
+            style={{
+              width: fixedWidth,
+              maxWidth: "100%",
+              boxSizing: "border-box",
+            }}
+          >
             <EventsList events={events} loading={loading} error={error} />
           </div>
 
           {/* Pagination */}
           {!loading && !error && events.length > 0 && (
-            <div style={{
-              width: fixedWidth,
-              maxWidth: "100%",
-              marginTop: "32px",
-              display: "flex",
-              justifyContent: "center",
-              boxSizing: "border-box"
-            }}>
+            <div
+              style={{
+                width: fixedWidth,
+                maxWidth: "100%",
+                marginTop: "32px",
+                display: "flex",
+                justifyContent: "center",
+                boxSizing: "border-box",
+              }}
+            >
               <Pagination
                 count={totalPages}
                 page={currentPage}
