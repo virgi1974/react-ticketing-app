@@ -1,26 +1,38 @@
-/**
- * API utilities for fetching events data
- */
+import { Event } from "../types/events";
+
+interface FetchEventsOptions {
+  startDate: Date;
+  endDate: Date;
+  page?: number;
+  perPage?: number;
+}
+
+interface PaginationMeta {
+  current_page: number;
+  total_pages: number;
+  total_count: number;
+  per_page: number;
+}
+
+interface ApiResponse {
+  data: Event[];
+  meta: {
+    pagination: PaginationMeta;
+  };
+}
 
 // Base URL for the API
 const BASE_URL = "/api/v1"; // This will be proxied through Vite
 
 /**
  * Fetch events with optional date filtering and pagination
- *
- * @param {Object} options - Query options
- * @param {Date} options.startDate - Start date for filtering events
- * @param {Date} options.endDate - End date for filtering events
- * @param {number} options.page - Page number for pagination (default: 1)
- * @param {number} options.perPage - Number of events per page (default: 10)
- * @returns {Promise} Promise resolving to events data
  */
 export const fetchEvents = async ({
   startDate,
   endDate,
   page = 1,
   perPage = 10,
-}) => {
+}: FetchEventsOptions): Promise<ApiResponse> => {
   try {
     // Build query parameters
     const params = new URLSearchParams();
@@ -33,8 +45,8 @@ export const fetchEvents = async ({
       params.append("ends_at", formatDate(endDate));
     }
 
-    params.append("page", page);
-    params.append("per_page", perPage);
+    params.append("page", page.toString());
+    params.append("per_page", perPage.toString());
 
     // Make the API request with proper URL and headers
     const response = await fetch(`${BASE_URL}/events?${params}`, {
@@ -50,7 +62,7 @@ export const fetchEvents = async ({
     }
 
     // Parse the JSON response
-    const data = await response.json();
+    const data: ApiResponse = await response.json();
     return data;
   } catch (error) {
     console.error("Error fetching events:", error);
@@ -59,11 +71,8 @@ export const fetchEvents = async ({
 };
 
 /**
- * Format a date object to YYYY-MM-DD string
- *
- * @param {Date} date - Date object to format
- * @returns {string} Formatted date string
+ * Format a date object to ISO string
  */
-const formatDate = (date) => {
+const formatDate = (date: Date): string => {
   return date.toISOString(); // Returns full ISO datetime format: 2025-03-22T00:00:00.000Z
 };

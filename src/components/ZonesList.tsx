@@ -3,8 +3,9 @@ import LocalActivityIcon from "@mui/icons-material/LocalActivity";
 import EuroIcon from "@mui/icons-material/Euro";
 import GroupIcon from "@mui/icons-material/Group";
 import EventSeatIcon from "@mui/icons-material/EventSeat";
+import { Zone, ZonesListProps } from "../types/events";
 
-const ZonesList = ({ zones }) => {
+const ZonesList = ({ zones }: ZonesListProps) => {
   return (
     <Box sx={{ mt: 2, mb: 1 }}>
       <Typography
@@ -28,7 +29,7 @@ const ZonesList = ({ zones }) => {
           gap: 2,
         }}
       >
-        {zones.map((zone) => (
+        {zones.map((zone: Zone) => (
           <Paper
             key={zone.id}
             elevation={0}

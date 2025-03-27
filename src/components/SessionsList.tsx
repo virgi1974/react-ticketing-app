@@ -5,23 +5,18 @@ import {
   Typography,
   Box,
   Chip,
-  Paper,
-  Stack,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SoldOutIcon from "@mui/icons-material/MoneyOff";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
-import LocalActivityIcon from "@mui/icons-material/LocalActivity";
-import EuroIcon from "@mui/icons-material/Euro";
-import GroupIcon from "@mui/icons-material/Group";
-import EventSeatIcon from "@mui/icons-material/EventSeat";
 import { formatDisplayDate } from "../utils/dateUtils";
 import ZonesList from "./ZonesList";
+import { Session, SessionsListProps } from "../types/events";
 
-const SessionsList = ({ slots }) => {
+const SessionsList = ({ slots }: SessionsListProps) => {
   return (
     <>
-      {slots?.map((slot, index) => (
+      {slots?.map((slot: Session, index: number) => (
         <Accordion key={slot.id || index} disableGutters>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

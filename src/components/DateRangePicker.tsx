@@ -2,16 +2,16 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // CSS for styling
 import "./DateRangePicker.css";
-import { Typography } from "@mui/material";
+import { DateRangePickerProps } from "../types/events";
 
-const DateRangePicker = ({ onDateChange }) => {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+const DateRangePicker = ({ onDateChange }: DateRangePickerProps) => {
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
 
   // Handle search button click
   const handleSearch = () => {
     // Only trigger search if both dates are selected
-    if (startDate && endDate && onDateChange) {
+    if (startDate && endDate) {
       onDateChange(startDate, endDate);
     }
   };
@@ -22,9 +22,7 @@ const DateRangePicker = ({ onDateChange }) => {
         <label>Start Date:</label>
         <DatePicker
           selected={startDate}
-          onChange={(date) => {
-            setStartDate(date);
-          }}
+          onChange={(date: Date | null) => setStartDate(date)}
           selectsStart
           startDate={startDate}
           endDate={endDate}
@@ -38,13 +36,11 @@ const DateRangePicker = ({ onDateChange }) => {
         <label>End Date:</label>
         <DatePicker
           selected={endDate}
-          onChange={(date) => {
-            setEndDate(date);
-          }}
+          onChange={(date: Date | null) => setEndDate(date)}
           selectsEnd
           startDate={startDate}
           endDate={endDate}
-          minDate={startDate}
+          minDate={startDate || undefined}
           dateFormat="yyyy-MM-dd"
           placeholderText="Select end date"
           className="date-input"

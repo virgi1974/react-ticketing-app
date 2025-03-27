@@ -1,4 +1,12 @@
-export const getCategoryImage = (category) => {
+type CategoryImages = {
+  [key: string]: string;
+};
+
+type CategoryColors = {
+  [key: string]: string;
+};
+
+export const getCategoryImage = (category?: string): string => {
   // Default image for fallback
   const defaultImage = "/images/default-event.jpg";
 
@@ -7,7 +15,7 @@ export const getCategoryImage = (category) => {
   }
 
   // Map of category keywords to images
-  const categoryMap = {
+  const categoryMap: CategoryImages = {
     music: "/images/categories/music.jpg",
     sports: "/images/categories/sports.jpg",
     museum: "/images/categories/museum.jpg",
@@ -30,12 +38,14 @@ export const getCategoryImage = (category) => {
   return defaultImage;
 };
 
-export const getCategoryColor = (category) => {
-  const colorMap = {
+export const getCategoryColor = (category?: string): string => {
+  if (!category) return "#ec20ec"; // Default color
+
+  const colorMap: CategoryColors = {
     music: "#2196f3", // blue
     sports: "#ff9800", // orange
     family: "#4caf50", // green
-    "museum visit": "#9c27b0", // green
+    "museum visit": "#9c27b0", // purple
   };
   return colorMap[category.toLowerCase()] || "#ec20ec"; // purple for others
 };

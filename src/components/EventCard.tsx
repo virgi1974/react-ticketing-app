@@ -5,34 +5,20 @@ import {
   Typography,
   Box,
   Chip,
-  Button,
   Dialog,
   DialogTitle,
   DialogContent,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  IconButton,
-  Paper,
-  Stack,
+  Fab,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useState } from "react";
-import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import { alpha } from "@mui/material/styles";
-import LocalActivityIcon from "@mui/icons-material/LocalActivity";
-import EuroIcon from "@mui/icons-material/Euro";
-import GroupIcon from "@mui/icons-material/Group";
-import EventSeatIcon from "@mui/icons-material/EventSeat";
-import SoldOutIcon from "@mui/icons-material/MoneyOff";
-import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import SessionsList from "./SessionsList";
-
 import { getCategoryImage, getCategoryColor } from "../utils/categoryUtils";
 import { formatDisplayDate } from "../utils/dateUtils";
+import { EventCardProps } from "../types/events";
 
-const EventCard = ({ event }) => {
+const EventCard = ({ event }: EventCardProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleViewDetails = () => {

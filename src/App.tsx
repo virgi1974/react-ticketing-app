@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { Container, Typography, Box, Pagination } from "@mui/material";
+import { Container, Typography, Pagination } from "@mui/material";
 import "./App.css";
-import DateRangePicker from "./components/DateRangePicker";
-import EventsList from "./components/EventsList";
+import DateRangePicker from "./components/DateRangePicker.tsx";
+import EventsList from "./components/EventsList.tsx";
 import { fetchEvents } from "./utils/api";
 import Navbar from "./components/Navbar";
+import { Event } from "./types/events";
 
 function App() {
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,12 +18,15 @@ function App() {
   const [perPage, _setPerPage] = useState(9);
 
   // Keep track of last search parameters
-  const [lastSearchDates, setLastSearchDates] = useState({
+  const [lastSearchDates, setLastSearchDates] = useState<{
+    startDate: Date | null;
+    endDate: Date | null;
+  }>({
     startDate: null,
     endDate: null,
   });
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
     // If we have date filters applied, fetch with the new page
     if (lastSearchDates.startDate && lastSearchDates.endDate) {
@@ -36,8 +40,8 @@ function App() {
   };
 
   const fetchEventsData = async (
-    startDate,
-    endDate,
+    startDate: Date,
+    endDate: Date,
     page = 1,
     itemsPerPage = perPage,
   ) => {
@@ -70,7 +74,7 @@ function App() {
     }
   };
 
-  const handleDateChange = (startDate, endDate) => {
+  const handleDateChange = (startDate: Date, endDate: Date) => {
     // Reset to page 1 when search criteria changes
     setCurrentPage(1);
     fetchEventsData(startDate, endDate, 1, perPage);
@@ -156,7 +160,7 @@ function App() {
               <Pagination
                 count={totalPages}
                 page={currentPage}
-                onChange={(e, page) => handlePageChange(page)}
+                onChange={(_e, page) => handlePageChange(page)}
                 color="primary"
                 size="large"
                 showFirstButton

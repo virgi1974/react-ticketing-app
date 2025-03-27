@@ -1,7 +1,8 @@
 import { Box, Typography, CircularProgress } from "@mui/material";
 import EventCard from "./EventCard";
+import { EventsListProps } from "../types/events";
 
-const EventsList = ({ events, loading, error }) => {
+const EventsList = ({ events, loading, error }: EventsListProps) => {
   if (loading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", my: 4 }}>
