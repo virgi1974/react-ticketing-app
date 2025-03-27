@@ -1,6 +1,7 @@
 export interface Event {
   id: number;
   external_id: string;
+  title: string;
   category: string;
   created_at: string;
   organizer_company_id: string;

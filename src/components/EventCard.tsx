@@ -41,7 +41,7 @@ const EventCard = ({ event }: EventCardProps) => {
       >
         <CardMedia
           component="img"
-          height="200"
+          height="160"
           image={getCategoryImage(event.category)}
           alt={event.category || "Event"}
           sx={{
@@ -49,8 +49,16 @@ const EventCard = ({ event }: EventCardProps) => {
             objectPosition: "center",
           }}
         />
-        <CardContent>
-          <Typography variant="h6" component="h2" gutterBottom>
+        <CardContent sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h6"
+            component="h2"
+            gutterBottom
+            sx={{
+              fontSize: { xs: "1.1rem", sm: "1.2rem" },
+              lineHeight: 1.3,
+            }}
+          >
             {event.title || "Untitled Event"}
           </Typography>
 
@@ -69,7 +77,14 @@ const EventCard = ({ event }: EventCardProps) => {
             />
           )}
 
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              mt: 1.5,
+              fontSize: { xs: "0.875rem", sm: "0.9rem" },
+            }}
+          >
             <Box component="span" fontWeight="fontWeightMedium">
               Created:
             </Box>{" "}
@@ -96,7 +111,7 @@ const EventCard = ({ event }: EventCardProps) => {
             <Typography
               variant="body2"
               sx={{
-                fontSize: "0.95rem",
+                fontSize: { xs: "0.875rem", sm: "0.9rem" },
                 fontWeight: 500,
                 color: "text.secondary",
               }}
@@ -109,7 +124,12 @@ const EventCard = ({ event }: EventCardProps) => {
             Array.isArray(event.slots) &&
             event.slots.length > 0 && (
               <Box sx={{ mt: 2 }}>
-                <Typography variant="body2">
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontSize: { xs: "0.875rem", sm: "0.9rem" },
+                  }}
+                >
                   <Box component="span" fontWeight="fontWeightMedium">
                     Sessions:
                   </Box>{" "}
