@@ -2,6 +2,20 @@
 
 A React-based frontend for an event ticketing system, built as part of a technical challenge to demonstrate frontend development skills.
 
+## 📑 Table of Contents
+- [Project Overview](#-project-overview)
+- [Technical Stack](#-technical-stack)
+- [Learning Journey](#-learning-journey)
+  - [Initial Approach](#initial-approach)
+  - [Key Learnings](#key-learnings)
+  - [Challenges Faced](#challenges-faced)
+- [Next Steps](#-next-steps)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [Development Notes](#-development-notes)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+
 ## 🎯 Project Overview
 
 This project implements a basic UI for a ticketing system where users can:
