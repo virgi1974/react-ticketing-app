@@ -1,4 +1,5 @@
 import { Event } from "../types/events";
+import { API_BASE } from "./config";
 
 interface FetchEventsOptions {
   startDate: Date;
@@ -20,9 +21,6 @@ interface ApiResponse {
     pagination: PaginationMeta;
   };
 }
-
-// Base URL for the API
-const BASE_URL = "/api/v1"; // This will be proxied through Vite
 
 /**
  * Fetch events with optional date filtering and pagination
@@ -49,7 +47,7 @@ export const fetchEvents = async ({
     params.append("per_page", perPage.toString());
 
     // Make the API request with proper URL and headers
-    const response = await fetch(`${BASE_URL}/events?${params}`, {
+    const response = await fetch(`${API_BASE}/events?${params}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",

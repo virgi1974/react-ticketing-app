@@ -25,3 +25,6 @@ dist-ssr
 
 .cursor/*
 local-dev-notes/*
+
+.env
+.env.local
