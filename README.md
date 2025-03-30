@@ -168,3 +168,19 @@ Each of the projects run under diifferent ports, so they'll find each other with
 ## 🤝 Contributing
 
 This is a technical challenge project, but feedback and suggestions are welcome!
+
+## 🚀 Deployment
+
+The application is deployed and available at:
+
+### Frontend (Vercel)
+- Live URL: [https://react-ticketing-app.vercel.app/](https://react-ticketing-app.vercel.app/)
+- Deployment managed through Vercel dashboard
+
+### Backend (Fly.io)
+- API endpoint: https://virgilio-fernandez.fly.dev
+- Handles database and Redis services
+- Configured with CORS for production
+
+### Local Development
+The local setup remains the same as described in "Getting Started". Environment variables and proxy settings handle the API URL switching between development and production environments.
